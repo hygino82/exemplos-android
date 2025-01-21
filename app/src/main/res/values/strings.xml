@@ -15,4 +15,9 @@
     <string name="a_media_informada_tem_um_valor_invalido">A media informada tem um valor inválido, deve ser um valor entre 0 e 100</string>
     <string name="possui_bolsa">Possui Bolsa</string>
     <string name="nao_possui_bolsa">Não possui bolsa</string>
+    <string name="esquerda">Esquerda</string>
+    <string name="direita">Direita</string>
+    <string name="ambas">Ambas</string>
+    <string name="faltou_preencher_a_mao_usada">Faltou preencher a Mão usada!</string>
+    <string name="mao_usada_valor">"Mão usada: "</string>
 </resources>

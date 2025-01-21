@@ -68,6 +68,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextMedia" />
 
+    <RadioGroup
+        android:id="@+id/radioGroupMaoUsada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxBolsista">
+
+        <RadioButton
+            android:id="@+id/radioButtonDireita"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/direita" />
+
+        <RadioButton
+            android:id="@+id/radioButtonEsquerda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/esquerda" />
+
+        <RadioButton
+            android:id="@+id/radioButtonAmbas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ambas" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/buttonLimpar"
         android:layout_width="wrap_content"
@@ -89,6 +116,6 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonLimpar"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxBolsista" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupMaoUsada" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
