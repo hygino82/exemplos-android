@@ -13,4 +13,6 @@
     <string name="media_valor">"Média: "</string>
     <string name="valor_numerico_invalido">Valor numérico inválido</string>
     <string name="a_media_informada_tem_um_valor_invalido">A media informada tem um valor inválido, deve ser um valor entre 0 e 100</string>
+    <string name="possui_bolsa">Possui Bolsa</string>
+    <string name="nao_possui_bolsa">Não possui bolsa</string>
 </resources>
