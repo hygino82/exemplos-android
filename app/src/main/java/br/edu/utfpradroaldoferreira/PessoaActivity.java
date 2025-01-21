@@ -4,17 +4,23 @@ import static android.widget.Toast.LENGTH_LONG;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PessoaActivity extends AppCompatActivity {
     private EditText editTextNome, editTextMedia;
     private CheckBox checkBoxBolsista;
     private RadioGroup radioGroupMaoUsada;
+    private Spinner spinnerTipo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,23 @@ public class PessoaActivity extends AppCompatActivity {
         editTextMedia = findViewById(R.id.editTextMedia);
         checkBoxBolsista = findViewById(R.id.checkBoxBolsista);
         radioGroupMaoUsada = findViewById(R.id.radioGroupMaoUsada);
+        spinnerTipo = findViewById(R.id.spinnerTipo);
+
+        popularSpinner();
+    }
+
+    private void popularSpinner() {
+        ArrayList<String> lista = new ArrayList<>();
+        lista.add(getString(R.string.aluno));
+        lista.add(getString(R.string.monitor));
+        lista.add(getString(R.string.tutor));
+        lista.add(getString(R.string.professor));
+        lista.add(getString(R.string.coordenador));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,
+                lista);
+        spinnerTipo.setAdapter(adapter);
     }
 
     public void limparCampos(View view) {
@@ -33,6 +56,7 @@ public class PessoaActivity extends AppCompatActivity {
         checkBoxBolsista.setChecked(false);
         editTextNome.requestFocus();
         radioGroupMaoUsada.clearCheck();
+        spinnerTipo.setSelection(0);
         Toast.makeText(this, R.string.campos_limpos, LENGTH_LONG).show();
     }
 
@@ -90,6 +114,15 @@ public class PessoaActivity extends AppCompatActivity {
                     LENGTH_LONG).show();
             return;
         }
+        //é retornado om objeto por isso é feito cast para String
+        String tipo = (String) spinnerTipo.getSelectedItem();
+
+        if (tipo == null) {
+            Toast.makeText(this,
+                    R.string.o_spinner_tipo_nao_possui_valores,
+                    LENGTH_LONG).show();
+            return;
+        }
 
         boolean bolsista = checkBoxBolsista.isChecked();
 
@@ -97,7 +130,8 @@ public class PessoaActivity extends AppCompatActivity {
                 getString(R.string.nome_valor) + nome + '\n'
                         + getString(R.string.media_valor) + media + '\n'
                         + (bolsista ? getString(R.string.possui_bolsa) : getString(R.string.nao_possui_bolsa)) + '\n'
-                        + getString(R.string.mao_usada_valor) + maoUsada
+                        + getString(R.string.mao_usada_valor) + maoUsada + '\n'
+                        + getString(R.string.tipo_valor) + tipo
                 ,
                 LENGTH_LONG).show();
     }

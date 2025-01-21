@@ -20,4 +20,13 @@
     <string name="ambas">Ambas</string>
     <string name="faltou_preencher_a_mao_usada">Faltou preencher a Mão usada!</string>
     <string name="mao_usada_valor">"Mão usada: "</string>
+    <string name="tipo">Tipo</string>
+    <string name="mao_usada">Mão usada</string>
+    <string name="aluno">Aluno</string>
+    <string name="monitor">Monitor</string>
+    <string name="tutor">Tutor</string>
+    <string name="professor">Professor</string>
+    <string name="coordenador">Coordenador</string>
+    <string name="o_spinner_tipo_nao_possui_valores">O Spinner tipo não possui valores</string>
+    <string name="tipo_valor">"Tipo: "</string>
 </resources>
