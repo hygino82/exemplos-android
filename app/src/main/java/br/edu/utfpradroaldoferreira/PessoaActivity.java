@@ -33,10 +33,10 @@ public class PessoaActivity extends AppCompatActivity {
         radioGroupMaoUsada = findViewById(R.id.radioGroupMaoUsada);
         spinnerTipo = findViewById(R.id.spinnerTipo);
 
-        popularSpinner();
+       // popularSpinner();
     }
 
-    private void popularSpinner() {
+    /*private void popularSpinner() {
         ArrayList<String> lista = new ArrayList<>();
         lista.add(getString(R.string.aluno));
         lista.add(getString(R.string.monitor));
@@ -48,7 +48,7 @@ public class PessoaActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 lista);
         spinnerTipo.setAdapter(adapter);
-    }
+    }*/
 
     public void limparCampos(View view) {
         editTextNome.setText(null);
