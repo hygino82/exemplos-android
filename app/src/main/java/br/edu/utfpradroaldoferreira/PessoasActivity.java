@@ -39,7 +39,7 @@ public class PessoasActivity extends AppCompatActivity {
         //cria um array com todas as contantes do enum
         MaoUsada[] maosUsadas = MaoUsada.values();
 
-        for (int cont = 0; cont <= pessoas_nomes.length; cont++) {
+       for (int cont = 0; cont < pessoas_nomes.length; cont++) {
             // redundante usar bolsista = (pessoas_bolsistas[cont] == 1 ? true : false);
             bolsista = pessoas_bolsistas[cont] == 1;
             maoUsada = maosUsadas[pessoas_maos_usadas[cont]];
@@ -60,6 +60,5 @@ public class PessoasActivity extends AppCompatActivity {
                 listaPessoas);
 
         listViewPessoas.setAdapter(adapter);
-
     }
 }
