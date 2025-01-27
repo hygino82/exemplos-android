@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Exemplo1</string>
+    <string name="app_name">ListViewResourcesArrays</string>
     <string name="nome">Nome</string>
     <string name="media">Média</string>
     <string name="limpar">Limpar</string>

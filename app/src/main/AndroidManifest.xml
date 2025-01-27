@@ -13,13 +13,21 @@
         android:theme="@style/Theme.Exemplo1"
         tools:targetApi="31">
         <activity
-            android:name=".PessoaActivity"
+            android:name=".PessoasActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".PessoaActivity"
+            android:exported="false">
+            <!-- não faz sentido
+            android:exported ser true quando não há intent-filter
+            se removermos esse atributo o seu valor padão é false
+            -->
         </activity>
     </application>
 

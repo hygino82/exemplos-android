@@ -7,4 +7,69 @@
         <item>@string/professor</item>
         <item>@string/coordenador</item>
     </string-array>
+
+    <string-array name="pessoas_nome">
+        <item>Gorete Medeiros</item>
+        <item>Roberto Silva</item>
+        <item>Juvenal Cardoso</item>
+        <item>Mario Souza</item>
+        <item>Juliana Mendes</item>
+        <item>Melania Pereira</item>
+        <item>Silvia Machado</item>
+        <item>Marcelo Antunes</item>
+        <item>Anderson Moura</item>
+        <item>Guilherme Andrade</item>
+    </string-array>
+
+    <integer-array name="pessoas_medias">
+        <item>78</item>
+        <item>87</item>
+        <item>45</item>
+        <item>99</item>
+        <item>63</item>
+        <item>71</item>
+        <item>82</item>
+        <item>94</item>
+        <item>65</item>
+        <item>76</item>
+    </integer-array>
+
+    <integer-array name="pessoas_bolsistas">
+        <item>1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
+        <item>1</item>
+        <item>1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="pessoas_tipos">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>0</item>
+        <item>1</item>
+        <item>4</item>
+        <item>3</item>
+        <item>2</item>
+    </integer-array>
+
+    <integer-array name="pessoas_maos_usadas">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>0</item>
+        <item>1</item>
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
+        <item>2</item>
+        <item>1</item>
+    </integer-array>
 </resources>
