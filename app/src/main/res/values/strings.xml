@@ -29,4 +29,6 @@
     <string name="coordenador">Coordenador</string>
     <string name="o_spinner_tipo_nao_possui_valores">O Spinner tipo não possui valores</string>
     <string name="tipo_valor">"Tipo: "</string>
+    <string name="pessoa_de_nome">Pessoa de nome \"</string>
+    <string name="foi_clicada">\"\n foi clicada!</string>
 </resources>

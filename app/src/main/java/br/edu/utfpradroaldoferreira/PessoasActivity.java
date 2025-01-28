@@ -1,7 +1,10 @@
 package br.edu.utfpradroaldoferreira;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +24,22 @@ public class PessoasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pessoas);
 
         listViewPessoas = findViewById(R.id.listViewPessoas);
+
+        listViewPessoas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent,
+                                    View view,
+                                    int position,
+                                    long id) {
+
+                Pessoa pessoa = (Pessoa) listViewPessoas.getItemAtPosition(position);
+
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.pessoa_de_nome) + pessoa.getNome() + getString(R.string.foi_clicada),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
         popularListaPessoas();
     }
 
