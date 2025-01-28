@@ -66,6 +66,6 @@ public class Pessoa {
                 media + '\n' +
                 bolsista + '\n' +
                 tipo + '\n' +
-                maoUsada + '\n';
+                maoUsada;
     }
 }

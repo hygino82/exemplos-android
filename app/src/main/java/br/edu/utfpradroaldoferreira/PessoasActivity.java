@@ -1,7 +1,6 @@
 package br.edu.utfpradroaldoferreira;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +12,8 @@ public class PessoasActivity extends AppCompatActivity {
 
     private ListView listViewPessoas;
     private List<Pessoa> listaPessoas;
+
+    private PessoaAdapter pessoaAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class PessoasActivity extends AppCompatActivity {
         //cria um array com todas as contantes do enum
         MaoUsada[] maosUsadas = MaoUsada.values();
 
-       for (int cont = 0; cont < pessoas_nomes.length; cont++) {
+        for (int cont = 0; cont < pessoas_nomes.length; cont++) {
             // redundante usar bolsista = (pessoas_bolsistas[cont] == 1 ? true : false);
             bolsista = pessoas_bolsistas[cont] == 1;
             maoUsada = maosUsadas[pessoas_maos_usadas[cont]];
@@ -54,11 +55,8 @@ public class PessoasActivity extends AppCompatActivity {
             listaPessoas.add(pessoa);
         }
 
-        ArrayAdapter<Pessoa> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                listaPessoas);
+        pessoaAdapter = new PessoaAdapter(this, listaPessoas);
 
-        listViewPessoas.setAdapter(adapter);
+        listViewPessoas.setAdapter(pessoaAdapter);
     }
 }
