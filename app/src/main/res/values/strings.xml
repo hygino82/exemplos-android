@@ -32,4 +32,9 @@
     <string name="pessoa_de_nome">Pessoa de nome \"</string>
     <string name="foi_clicada">\"\n foi clicada!</string>
     <string name="recebeu_click_longo">\n \"recebeu click longo!\"</string>
+    <string name="logo_da_utfpr">Logo da UTFPR</string>
+    <string name="descricao">Exemplo do curso de Desenvolbimento Android</string>
+    <string name="autoria">Autor: Adroaldo Hygino Ferreira</string>
+    <string name="sobre">Sobre</string>
+    <string name="controle_de_pessoas">Controle de Pessoas</string>
 </resources>

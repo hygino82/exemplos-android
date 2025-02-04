@@ -13,6 +13,9 @@
         android:theme="@style/Theme.ThemeStylesIcons"
         tools:targetApi="31">
         <activity
+            android:name=".SobreActivity"
+            android:exported="false" />
+        <activity
             android:name=".PessoasActivity"
             android:exported="true">
             <intent-filter>
@@ -24,7 +27,9 @@
         <activity
             android:name=".PessoaActivity"
             android:exported="false">
-            <!-- não faz sentido
+
+            <!--
+            não faz sentido
             android:exported ser true quando não há intent-filter
             se removermos esse atributo o seu valor padão é false
             -->

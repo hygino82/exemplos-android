@@ -1,10 +1,9 @@
 package br.edu.utfpradroaldoferreira;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +27,8 @@ public class PessoasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pessoas);
+
+        setTitle(getString(R.string.controle_de_pessoas));
 
         recyclerViewPessoas = findViewById(R.id.recyclerViewPessoas);
 
@@ -92,5 +93,10 @@ public class PessoasActivity extends AppCompatActivity {
         pessoaRecyclerViewAdapter = new PessoaRecyclerViewAdapter(this, listaPessoas, onItemClickListener);
 
         recyclerViewPessoas.setAdapter(pessoaRecyclerViewAdapter);
+    }
+
+    public void abrirSobre(View view) {
+        Intent intentAbertura = new Intent(this, SobreActivity.class);
+        startActivity(intentAbertura);
     }
 }
