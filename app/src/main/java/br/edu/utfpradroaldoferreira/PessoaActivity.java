@@ -2,9 +2,10 @@ package br.edu.utfpradroaldoferreira;
 
 import static android.widget.Toast.LENGTH_LONG;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -13,10 +14,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class PessoaActivity extends AppCompatActivity {
+    public static final String KEY_NOME = "KEY_NOME";
+    public static final String KEY_MEDIA = "KEY_MEDIA";
+    public static final String KEY_BOLSISTA = "KEY_BOLSISTA";
+    public static final String KEY_TIPO = "KEY_TIPO";
+    public static final String KEY_MAO_USADA = "KEY_MAO_USADA";
     private EditText editTextNome, editTextMedia;
     private CheckBox checkBoxBolsista;
     private RadioGroup radioGroupMaoUsada;
@@ -26,29 +29,14 @@ public class PessoaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pessoa);
+        setTitle(getString(R.string.cadastro_de_pessoas));
 
         editTextNome = findViewById(R.id.editTextNome);
         editTextMedia = findViewById(R.id.editTextMedia);
         checkBoxBolsista = findViewById(R.id.checkBoxBolsista);
         radioGroupMaoUsada = findViewById(R.id.radioGroupMaoUsada);
         spinnerTipo = findViewById(R.id.spinnerTipo);
-
-       // popularSpinner();
     }
-
-    /*private void popularSpinner() {
-        ArrayList<String> lista = new ArrayList<>();
-        lista.add(getString(R.string.aluno));
-        lista.add(getString(R.string.monitor));
-        lista.add(getString(R.string.tutor));
-        lista.add(getString(R.string.professor));
-        lista.add(getString(R.string.coordenador));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
-                lista);
-        spinnerTipo.setAdapter(adapter);
-    }*/
 
     public void limparCampos(View view) {
         editTextNome.setText(null);
@@ -63,7 +51,7 @@ public class PessoaActivity extends AppCompatActivity {
     public void salvarCampos(View view) {
         String nome = editTextNome.getText().toString();
 
-        if (nome == null || nome.trim().isEmpty()) {
+        if (nome.trim().isEmpty()) {
             Toast.makeText(this, R.string.faltou_entrar_com_o_nome, LENGTH_LONG).show();
 
             //retorna o foco
@@ -75,7 +63,7 @@ public class PessoaActivity extends AppCompatActivity {
 
         final String mediaString = editTextMedia.getText().toString();
 
-        if (mediaString == null || mediaString.trim().isEmpty()) {
+        if (mediaString.trim().isEmpty()) {
             Toast.makeText(this, R.string.faltou_entrar_com_a_media, LENGTH_LONG).show();
             editTextMedia.requestFocus();
             return;
@@ -100,14 +88,15 @@ public class PessoaActivity extends AppCompatActivity {
         }
 
         int radioButtonId = radioGroupMaoUsada.getCheckedRadioButtonId();
-        String maoUsada;
+
+        MaoUsada maoUsada;
 
         if (radioButtonId == R.id.radioButtonDireita) {
-            maoUsada = getString(R.string.direita);
+            maoUsada = MaoUsada.Direita;
         } else if (radioButtonId == R.id.radioButtonEsquerda) {
-            maoUsada = getString(R.string.esquerda);
+            maoUsada = MaoUsada.Esquerda;
         } else if (radioButtonId == R.id.radioButtonAmbas) {
-            maoUsada = getString(R.string.ambas);
+            maoUsada = MaoUsada.Ambas;
         } else {
             Toast.makeText(this,
                     R.string.faltou_preencher_a_mao_usada,
@@ -115,9 +104,9 @@ public class PessoaActivity extends AppCompatActivity {
             return;
         }
         //é retornado om objeto por isso é feito cast para String
-        String tipo = (String) spinnerTipo.getSelectedItem();
+        int tipo = (int) spinnerTipo.getSelectedItem();
 
-        if (tipo == null) {
+        if (tipo == AdapterView.INVALID_POSITION) {
             Toast.makeText(this,
                     R.string.o_spinner_tipo_nao_possui_valores,
                     LENGTH_LONG).show();
@@ -126,13 +115,15 @@ public class PessoaActivity extends AppCompatActivity {
 
         boolean bolsista = checkBoxBolsista.isChecked();
 
-        Toast.makeText(this,
-                getString(R.string.nome_valor) + nome + '\n'
-                        + getString(R.string.media_valor) + media + '\n'
-                        + (bolsista ? getString(R.string.possui_bolsa) : getString(R.string.nao_possui_bolsa)) + '\n'
-                        + getString(R.string.mao_usada_valor) + maoUsada + '\n'
-                        + getString(R.string.tipo_valor) + tipo
-                ,
-                LENGTH_LONG).show();
+        Intent intentResposta = new Intent();
+        intentResposta.putExtra(KEY_NOME, nome);
+        intentResposta.putExtra(KEY_MEDIA, media);
+        intentResposta.putExtra(KEY_BOLSISTA, bolsista);
+        intentResposta.putExtra(KEY_TIPO, tipo);
+        intentResposta.putExtra(KEY_MAO_USADA, maoUsada.toString());//enum
+
+        setResult(PessoaActivity.RESULT_OK, intentResposta);
+
+        finish();//força o fechamento da activity
     }
 }

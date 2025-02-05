@@ -37,4 +37,7 @@
     <string name="autoria">Autor: Adroaldo Hygino Ferreira</string>
     <string name="sobre">Sobre</string>
     <string name="controle_de_pessoas">Controle de Pessoas</string>
+    <string name="cadastro">Cadastro</string>
+    <string name="adicionar">Adicionar</string>
+    <string name="cadastro_de_pessoas">Cadastro de Pessoas</string>
 </resources>

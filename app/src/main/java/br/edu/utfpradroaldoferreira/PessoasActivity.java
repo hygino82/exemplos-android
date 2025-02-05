@@ -6,6 +6,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,35 +64,7 @@ public class PessoasActivity extends AppCompatActivity {
     }
 
     private void popularListaPessoas() {
-
-        String[] pessoas_nomes = getResources().getStringArray(R.array.pessoas_nome);
-        int[] pessoas_medias = getResources().getIntArray(R.array.pessoas_medias);
-        int[] pessoas_bolsistas = getResources().getIntArray(R.array.pessoas_bolsistas);
-        int[] pessoas_tipos = getResources().getIntArray(R.array.pessoas_tipos);
-        int[] pessoas_maos_usadas = getResources().getIntArray(R.array.pessoas_maos_usadas);
-
         listaPessoas = new ArrayList<>();
-
-        Pessoa pessoa;
-        boolean bolsista;
-        MaoUsada maoUsada;
-        //cria um array com todas as contantes do enum
-        MaoUsada[] maosUsadas = MaoUsada.values();
-
-        for (int cont = 0; cont < pessoas_nomes.length; cont++) {
-            // redundante usar bolsista = (pessoas_bolsistas[cont] == 1 ? true : false);
-            bolsista = pessoas_bolsistas[cont] == 1;
-            maoUsada = maosUsadas[pessoas_maos_usadas[cont]];
-
-            pessoa = new Pessoa(
-                    pessoas_nomes[cont],
-                    pessoas_medias[cont],
-                    bolsista,
-                    pessoas_tipos[cont],
-                    maoUsada
-            );
-            listaPessoas.add(pessoa);
-        }
 
         pessoaRecyclerViewAdapter = new PessoaRecyclerViewAdapter(this, listaPessoas, onItemClickListener);
 
@@ -98,5 +74,39 @@ public class PessoasActivity extends AppCompatActivity {
     public void abrirSobre(View view) {
         Intent intentAbertura = new Intent(this, SobreActivity.class);
         startActivity(intentAbertura);
+    }
+
+    ActivityResultLauncher<Intent> launcherNovaPessoa =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == PessoasActivity.RESULT_OK) {
+                                Intent intent = result.getData();
+                                assert intent != null;
+                                Bundle bundle = intent.getExtras();//recebe os valores de putExtra
+
+                                if (bundle != null) {
+                                    String nome = bundle.getString(PessoaActivity.KEY_NOME);
+                                    int media = bundle.getInt(PessoaActivity.KEY_MEDIA);
+                                    boolean bolsista = bundle.getBoolean(PessoaActivity.KEY_BOLSISTA);
+                                    int tipo = bundle.getInt(PessoaActivity.KEY_TIPO);
+                                    String maoUsadaTexto = bundle.getString(PessoaActivity.KEY_MAO_USADA);
+
+                                    Pessoa pessoa = new Pessoa(nome, media, bolsista, tipo, MaoUsada.valueOf(maoUsadaTexto));
+
+                                    listaPessoas.add(pessoa);
+
+                                    //avisa alteração dos dados da lista
+                                    pessoaRecyclerViewAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    });
+
+    public void abrirNovaPessoa(View view) {//chama o cadastro de nova pessoa
+        Intent intentAbertura = new Intent(this, PessoaActivity.class);
+
+        launcherNovaPessoa.launch(intentAbertura);
     }
 }
