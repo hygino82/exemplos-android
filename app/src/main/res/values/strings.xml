@@ -33,11 +33,15 @@
     <string name="foi_clicada">\"\n foi clicada!</string>
     <string name="recebeu_click_longo">\n \"recebeu click longo!\"</string>
     <string name="logo_da_utfpr">Logo da UTFPR</string>
-    <string name="descricao">Exemplo do curso de Desenvolbimento Android</string>
-    <string name="autoria">Autor: Adroaldo Hygino Ferreira</string>
+    <string name="descricao">Exemplo do curso de Desenvolvimento Android</string>
+    <string name="autoria">Autor: <a href ="http://lattes.cnpq.br/3956885446716361">Adroaldo Hygino Ferreira</a> </string>
     <string name="sobre">Sobre</string>
     <string name="controle_de_pessoas">Controle de Pessoas</string>
     <string name="cadastro">Cadastro</string>
     <string name="adicionar">Adicionar</string>
     <string name="cadastro_de_pessoas">Cadastro de Pessoas</string>
+    <string name="site_utfpr">www.utfpr.edu.br</string>
+    <string name="email_contato"><u>adroaldoferreira@alunos.utfpr.edu.br</u></string>
+    <string name="nenhum_aplicativo_para_abrir_paginas_web">Nenhum aplicativo para abrir páginas web!</string>
+    <string name="nenhum_aplicativo_para_enviar_e_mail">Nenhum aplicativo para enviar e-mail!</string>
 </resources>
