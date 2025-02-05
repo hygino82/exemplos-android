@@ -43,17 +43,23 @@ public class PessoasActivity extends AppCompatActivity {
         recyclerViewPessoas.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
 
         onItemClickListener = new PessoaRecyclerViewAdapter.OnItemClickListener() {
+
             @Override
             public void onItemClick(View view, int position) {
+
                 Pessoa pessoa = listaPessoas.get(position);
+
                 Toast.makeText(getApplicationContext(),
                         getString(R.string.pessoa_de_nome) + pessoa.getNome() + getString(R.string.foi_clicada),
                         Toast.LENGTH_LONG).show();
+
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
+
                 Pessoa pessoa = listaPessoas.get(position);
+
                 Toast.makeText(getApplicationContext(),
                         getString(R.string.pessoa_de_nome) + pessoa.getNome() + getString(R.string.recebeu_click_longo),
                         Toast.LENGTH_LONG).show();
@@ -64,6 +70,7 @@ public class PessoasActivity extends AppCompatActivity {
     }
 
     private void popularListaPessoas() {
+
         listaPessoas = new ArrayList<>();
 
         pessoaRecyclerViewAdapter = new PessoaRecyclerViewAdapter(this, listaPessoas, onItemClickListener);
@@ -72,39 +79,45 @@ public class PessoasActivity extends AppCompatActivity {
     }
 
     public void abrirSobre(View view) {
+
         Intent intentAbertura = new Intent(this, SobreActivity.class);
+
         startActivity(intentAbertura);
     }
 
-    ActivityResultLauncher<Intent> launcherNovaPessoa =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            if (result.getResultCode() == PessoasActivity.RESULT_OK) {
-                                Intent intent = result.getData();
-                                assert intent != null;
-                                Bundle bundle = intent.getExtras();//recebe os valores de putExtra
+    ActivityResultLauncher<Intent> launcherNovaPessoa = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
 
-                                if (bundle != null) {
-                                    String nome = bundle.getString(PessoaActivity.KEY_NOME);
-                                    int media = bundle.getInt(PessoaActivity.KEY_MEDIA);
-                                    boolean bolsista = bundle.getBoolean(PessoaActivity.KEY_BOLSISTA);
-                                    int tipo = bundle.getInt(PessoaActivity.KEY_TIPO);
-                                    String maoUsadaTexto = bundle.getString(PessoaActivity.KEY_MAO_USADA);
+            new ActivityResultCallback<ActivityResult>() {
 
-                                    Pessoa pessoa = new Pessoa(nome, media, bolsista, tipo, MaoUsada.valueOf(maoUsadaTexto));
+                @Override
+                public void onActivityResult(ActivityResult result) {
 
-                                    listaPessoas.add(pessoa);
+                    if (result.getResultCode() == PessoasActivity.RESULT_OK) {
 
-                                    //avisa alteração dos dados da lista
-                                    pessoaRecyclerViewAdapter.notifyDataSetChanged();
-                                }
-                            }
+                        Intent intent = result.getData();
+
+                        Bundle bundle = intent.getExtras();
+
+                        if (bundle != null) {
+
+                            String nome = bundle.getString(PessoaActivity.KEY_NOME);
+                            int media = bundle.getInt(PessoaActivity.KEY_MEDIA);
+                            boolean bolsista = bundle.getBoolean(PessoaActivity.KEY_BOLSISTA);
+                            int tipo = bundle.getInt(PessoaActivity.KEY_TIPO);
+                            String maoUsadaTexto = bundle.getString(PessoaActivity.KEY_MAO_USADA);
+
+                            Pessoa pessoa = new Pessoa(nome, media, bolsista, tipo, MaoUsada.valueOf(maoUsadaTexto));
+
+                            listaPessoas.add(pessoa);
+
+                            pessoaRecyclerViewAdapter.notifyDataSetChanged();
                         }
-                    });
+                    }
+                }
+            });
 
-    public void abrirNovaPessoa(View view) {//chama o cadastro de nova pessoa
+    public void abrirNovaPessoa(View view) {
+
         Intent intentAbertura = new Intent(this, PessoaActivity.class);
 
         launcherNovaPessoa.launch(intentAbertura);
