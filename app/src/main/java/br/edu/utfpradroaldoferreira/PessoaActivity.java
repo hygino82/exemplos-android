@@ -2,6 +2,8 @@ package br.edu.utfpradroaldoferreira;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -10,6 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class PessoaActivity extends AppCompatActivity {
@@ -39,7 +42,7 @@ public class PessoaActivity extends AppCompatActivity {
         spinnerTipo = findViewById(R.id.spinnerTipo);
     }
 
-    public void limparCampos(View view) {
+    public void limparCampos() {
 
         editTextNome.setText(null);
         editTextMedia.setText(null);
@@ -54,7 +57,7 @@ public class PessoaActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
     }
 
-    public void salvarValores(View view) {
+    public void salvarValores() {
 
         String nome = editTextNome.getText().toString();
 
@@ -150,5 +153,26 @@ public class PessoaActivity extends AppCompatActivity {
         setResult(PessoaActivity.RESULT_OK, intentResposta);
 
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.pessoa_opcoes, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int idMenuItem = item.getItemId();
+
+        if (idMenuItem == R.id.menuItemSalvar) {
+            salvarValores();
+            return true;
+        } else if (idMenuItem == R.id.menuItemLimpar) {
+            limparCampos();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
