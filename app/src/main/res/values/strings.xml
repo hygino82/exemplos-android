@@ -44,4 +44,8 @@
     <string name="email_contato"><u>adroaldoferreira@alunos.utfpr.edu.br</u></string>
     <string name="nenhum_aplicativo_para_abrir_paginas_web">Nenhum aplicativo para abrir páginas web!</string>
     <string name="nenhum_aplicativo_para_enviar_e_mail">Nenhum aplicativo para enviar e-mail!</string>
+    <string name="editar">Editar</string>
+    <string name="excluir">Excluir</string>
+    <string name="nova_pessoa">Nova Pessoa</string>
+    <string name="editar_pessoa">Editar Pessoa</string>
 </resources>

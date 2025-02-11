@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -23,23 +23,74 @@ public class PessoaActivity extends AppCompatActivity {
     public static final String KEY_TIPO = "KEY_TIPO";
     public static final String KEY_MAO_USADA = "KEY_MAO_USADA";
 
+    public static final String KEY_MODO = "MODO";
+    //define o modo em que a activity de cadastro será aberta
+
+    public static final int MODO_NOVO = 0;
+    public static final int MODO_EDITAR = 1;
+
     private EditText editTextNome, editTextMedia;
     private CheckBox checkBoxBolsista;
     private RadioGroup radioGroupMaoUsada;
+    //precisa mapear os radio buttons
+    private RadioButton radioButtonDireita, radioButtonEsquerda, radioButtonAmbas;
     private Spinner spinnerTipo;
+
+    //usado para pegar o modo que o cadastro será aberto
+    private int modo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pessoa);
 
-        setTitle(getString(R.string.cadastro_de_pessoas));
+        //setTitle(getString(R.string.cadastro_de_pessoas));
 
         editTextNome = findViewById(R.id.editTextNome);
         editTextMedia = findViewById(R.id.editTextMedia);
         checkBoxBolsista = findViewById(R.id.checkBoxBolsista);
         radioGroupMaoUsada = findViewById(R.id.radioGroupMaoUsada);
         spinnerTipo = findViewById(R.id.spinnerTipo);
+
+        radioButtonDireita = findViewById(R.id.radioButtonDireita);
+        radioButtonAmbas = findViewById(R.id.radioButtonAmbas);
+        radioButtonEsquerda = findViewById(R.id.radioButtonEsquerda);
+
+
+        Intent intentAbertura = getIntent();
+        Bundle bundle = intentAbertura.getExtras();
+
+        if (bundle != null) {
+            modo = bundle.getInt(KEY_MODO);
+
+            if (modo == MODO_NOVO) {
+                setTitle(getString(R.string.nova_pessoa));
+            } else {
+                setTitle(getString(R.string.editar_pessoa));
+//extrai dados vindos do bundle
+                String nome = bundle.getString(PessoaActivity.KEY_NOME);
+                int media = bundle.getInt(PessoaActivity.KEY_MEDIA);
+                boolean bolsista = bundle.getBoolean(PessoaActivity.KEY_BOLSISTA);
+                int tipo = bundle.getInt(PessoaActivity.KEY_TIPO);
+                String maoUsadaTexto = bundle.getString(PessoaActivity.KEY_MAO_USADA);
+
+                MaoUsada maoUsada = MaoUsada.valueOf(maoUsadaTexto);
+
+                editTextNome.setText(nome);
+                editTextMedia.setText(String.valueOf(media));
+                checkBoxBolsista.setChecked(bolsista);
+                spinnerTipo.setSelection(tipo);
+
+                if (maoUsada == MaoUsada.Direita) {
+                    radioButtonDireita.setChecked(true);
+
+                } else if (maoUsada == MaoUsada.Esquerda) {
+                    radioButtonEsquerda.setChecked(true);
+                } else if (maoUsada == MaoUsada.Ambas) {
+                    radioButtonAmbas.setChecked(true);
+                }
+            }
+        }
     }
 
     public void limparCampos() {
