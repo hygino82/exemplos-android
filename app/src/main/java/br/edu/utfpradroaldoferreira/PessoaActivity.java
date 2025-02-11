@@ -38,6 +38,7 @@ public class PessoaActivity extends AppCompatActivity {
 
     //usado para pegar o modo que o cadastro será aberto
     private int modo;
+    private Pessoa pessoaOriginal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class PessoaActivity extends AppCompatActivity {
                 setTitle(getString(R.string.nova_pessoa));
             } else {
                 setTitle(getString(R.string.editar_pessoa));
-//extrai dados vindos do bundle
+                //extrai dados vindos do bundle
                 String nome = bundle.getString(PessoaActivity.KEY_NOME);
                 int media = bundle.getInt(PessoaActivity.KEY_MEDIA);
                 boolean bolsista = bundle.getBoolean(PessoaActivity.KEY_BOLSISTA);
@@ -75,6 +76,8 @@ public class PessoaActivity extends AppCompatActivity {
                 String maoUsadaTexto = bundle.getString(PessoaActivity.KEY_MAO_USADA);
 
                 MaoUsada maoUsada = MaoUsada.valueOf(maoUsadaTexto);
+
+                pessoaOriginal = new Pessoa(nome, media, bolsista, tipo, maoUsada);
 
                 editTextNome.setText(nome);
                 editTextMedia.setText(String.valueOf(media));
@@ -192,6 +195,19 @@ public class PessoaActivity extends AppCompatActivity {
         }
 
         boolean bolsista = checkBoxBolsista.isChecked();
+
+        if (modo == MODO_EDITAR &&
+                nome.equalsIgnoreCase(pessoaOriginal.getNome()) &&
+                bolsista == pessoaOriginal.isBolsista() &&
+                media == pessoaOriginal.getMedia() &&
+                maoUsada == pessoaOriginal.getMaoUsada() &&
+                tipo == pessoaOriginal.getTipo()) {
+                //valores são iguais aos anteriores
+            setResult(PessoaActivity.RESULT_CANCELED);
+            finish();
+            return;
+        }
+
 
         Intent intentResposta = new Intent();
 

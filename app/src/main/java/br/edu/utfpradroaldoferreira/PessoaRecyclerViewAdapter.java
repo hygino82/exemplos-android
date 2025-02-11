@@ -31,7 +31,7 @@ public class PessoaRecyclerViewAdapter extends RecyclerView.Adapter<PessoaRecycl
     }
 
     interface OnItemLongClickListener {
-        void onItemLongClick(View view, int position);
+        boolean onItemLongClick(View view, int position);
     }
 
     interface OnCreateContextMenu {
