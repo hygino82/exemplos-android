@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Intent;
@@ -177,6 +178,8 @@ public class PessoasActivity extends AppCompatActivity {
 
                             listaPessoas.add(pessoa);
 
+                            Collections.sort(listaPessoas, Pessoa.ordenacaoCrescente);
+
                             pessoaRecyclerViewAdapter.notifyDataSetChanged();
                         }
                     }
@@ -267,6 +270,8 @@ public class PessoasActivity extends AppCompatActivity {
                             pessoa.setBolsista(bolsista);
                             pessoa.setTipo(tipo);
                             pessoa.setMaoUsada(MaoUsada.valueOf(maoUsadaTexto));
+
+                            Collections.sort(listaPessoas, Pessoa.ordenacaoCrescente);
 
                             pessoaRecyclerViewAdapter.notifyDataSetChanged();
                         }

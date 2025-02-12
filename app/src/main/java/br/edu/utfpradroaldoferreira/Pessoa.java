@@ -1,6 +1,14 @@
 package br.edu.utfpradroaldoferreira;
 
+import java.util.Comparator;
+
 public class Pessoa {
+    public static Comparator<Pessoa> ordenacaoCrescente = new Comparator<Pessoa>() {
+        @Override
+        public int compare(Pessoa pessoa1, Pessoa pessoa2) {
+            return pessoa1.getNome().compareToIgnoreCase(pessoa2.getNome());
+        }
+    };
     private String nome;
 
     private int media;
@@ -62,7 +70,7 @@ public class Pessoa {
 
     @Override
     public String toString() {
-        return  nome + '\n' +
+        return nome + '\n' +
                 media + '\n' +
                 bolsista + '\n' +
                 tipo + '\n' +

@@ -14,10 +14,13 @@
         tools:targetApi="31">
         <activity
             android:name=".SobreActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".PessoasActivity" />
         <activity
             android:name=".PessoasActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,14 +29,8 @@
         </activity>
         <activity
             android:name=".PessoaActivity"
-            android:exported="false">
-
-            <!--
-            não faz sentido
-            android:exported ser true quando não há intent-filter
-            se removermos esse atributo o seu valor padão é false
-            -->
-        </activity>
+            android:exported="false"
+            android:parentActivityName=".PessoasActivity"/>
     </application>
 
 </manifest>
