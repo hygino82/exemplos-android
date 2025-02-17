@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-02-11T21:19:58.183994899Z">
+        <DropdownSelection timestamp="2025-02-17T18:34:09.745907232Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/home/hygino/.android/avd/Nexus_4_API_24.avd" />

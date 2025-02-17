@@ -49,4 +49,5 @@
     <string name="nova_pessoa">Nova Pessoa</string>
     <string name="editar_pessoa">Editar Pessoa</string>
     <string name="sugerir_tipo">Sugerir Tipo</string>
+    <string name="ordenacao">Ordenação</string>
 </resources>

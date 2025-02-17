@@ -1,5 +1,7 @@
 package br.edu.utfpradroaldoferreira;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -44,6 +46,10 @@ public class PessoasActivity extends AppCompatActivity {
     private Drawable backgroundDrawable;
 
     public static final String ARQUIVO_PREFERENCIAS = "br.edu.utfpradroaldoferreira.PREFERENCIAS";
+    public static final String KEY_ORDENACAO_ASCENDENTE = "ORDENACAO_ASCENDENTE";
+    private boolean ordenacaoAscendente = true;
+
+    private MenuItem menuItemOrdenacao;
 
     private final ActionMode.Callback actionCallback = new ActionMode.Callback() {
 
@@ -106,7 +112,10 @@ public class PessoasActivity extends AppCompatActivity {
         recyclerViewPessoas.setHasFixedSize(true);
         recyclerViewPessoas.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
 
+        lerPreferencias();
         popularListaPessoas();
+
+        ordenarLista();//usa por causa dos dados mocados remover na entrega da atividade
     }
 
     private void popularListaPessoas() {
@@ -114,8 +123,7 @@ public class PessoasActivity extends AppCompatActivity {
         listaPessoas = new ArrayList<>();
 
         //para testes
-        listaPessoas.add(new Pessoa("Gorete", 87, false, 1, MaoUsada.Direita));
-        listaPessoas.add(new Pessoa("Juvenal", 68, true, 3, MaoUsada.Ambas));
+        listaPessoas.addAll(Factory.gerarListaPessoas());
 
         pessoaRecyclerViewAdapter = new PessoaRecyclerViewAdapter(this, listaPessoas);
 
@@ -180,9 +188,7 @@ public class PessoasActivity extends AppCompatActivity {
 
                             listaPessoas.add(pessoa);
 
-                            Collections.sort(listaPessoas, Pessoa.ordenacaoCrescente);
-
-                            pessoaRecyclerViewAdapter.notifyDataSetChanged();
+                            ordenarLista();
                         }
                     }
                 }
@@ -207,6 +213,11 @@ public class PessoasActivity extends AppCompatActivity {
         } else if (idMenuItem == R.id.menuItemSobre) {
             abrirSobre();
             return true;
+        } else if (idMenuItem == R.id.menuItemOrdenacao) {
+            salvarPreferenciaOrdenacaoAscendente(!ordenacaoAscendente);
+            atualizarIconeOrdenacao();
+            ordenarLista();
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -215,7 +226,15 @@ public class PessoasActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.pessoas_opcoes, menu);
+        menuItemOrdenacao = menu.findItem(R.id.menuItemOrdenacao);
         //o retorno true faz com que seja exibido o menu
+        return true;
+    }
+
+    //utilizado para carregar o ícone de ordenação aplicado por último
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        atualizarIconeOrdenacao();
         return true;
     }
 
@@ -273,9 +292,7 @@ public class PessoasActivity extends AppCompatActivity {
                             pessoa.setTipo(tipo);
                             pessoa.setMaoUsada(MaoUsada.valueOf(maoUsadaTexto));
 
-                            Collections.sort(listaPessoas, Pessoa.ordenacaoCrescente);
-
-                            pessoaRecyclerViewAdapter.notifyDataSetChanged();
+                            ordenarLista();
                         }
                     }
                     posicaoSelecionada = -1;
@@ -285,4 +302,39 @@ public class PessoasActivity extends AppCompatActivity {
                     }
                 }
             });
+
+    private void ordenarLista() {
+        if (ordenacaoAscendente) {
+            Collections.sort(listaPessoas, Pessoa.ordenacaoCrescente);
+        } else {
+            Collections.sort(listaPessoas, Pessoa.ordenacaoDecrescente);
+        }
+        pessoaRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    private void lerPreferencias() {
+        SharedPreferences shared = getSharedPreferences(PessoasActivity.ARQUIVO_PREFERENCIAS, Context.MODE_PRIVATE);
+
+        ordenacaoAscendente = shared.getBoolean(KEY_ORDENACAO_ASCENDENTE, ordenacaoAscendente);
+    }
+
+    private void salvarPreferenciaOrdenacaoAscendente(boolean novoValor) {
+        SharedPreferences shared = getSharedPreferences(PessoasActivity.ARQUIVO_PREFERENCIAS, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = shared.edit();
+
+        editor.putBoolean(KEY_ORDENACAO_ASCENDENTE, novoValor);
+
+        editor.commit();
+
+        ordenacaoAscendente = novoValor;
+    }
+
+    private void atualizarIconeOrdenacao() {
+        if (ordenacaoAscendente) {
+            menuItemOrdenacao.setIcon(R.drawable.ic_action_ascending_order);
+        } else {
+            menuItemOrdenacao.setIcon(R.drawable.ic_action_descending_order);
+        }
+    }
 }
