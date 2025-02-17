@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ThemeStylesIcons</string>
+    <string name="app_name">Shared Preferences</string>
     <string name="nome">Nome</string>
     <string name="media">Média</string>
     <string name="limpar">Limpar</string>
@@ -48,4 +48,5 @@
     <string name="excluir">Excluir</string>
     <string name="nova_pessoa">Nova Pessoa</string>
     <string name="editar_pessoa">Editar Pessoa</string>
+    <string name="sugerir_tipo">Sugerir Tipo</string>
 </resources>

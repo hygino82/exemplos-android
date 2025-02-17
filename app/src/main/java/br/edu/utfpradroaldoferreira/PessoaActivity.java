@@ -1,6 +1,8 @@
 package br.edu.utfpradroaldoferreira;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +28,9 @@ public class PessoaActivity extends AppCompatActivity {
     public static final String KEY_MODO = "MODO";
     //define o modo em que a activity de cadastro será aberta
 
+    public static final String KEY_SUGERIR_TIPO = "SUGERIR_TIPO";
+    public static final String KEY_ULTIMO_TIPO = "ULTIMO_TIPO";
+
     public static final int MODO_NOVO = 0;
     public static final int MODO_EDITAR = 1;
 
@@ -39,6 +44,10 @@ public class PessoaActivity extends AppCompatActivity {
     //usado para pegar o modo que o cadastro será aberto
     private int modo;
     private Pessoa pessoaOriginal;
+
+    //valores iniciais
+    private boolean sugerirTipo = false;
+    private int ultimoTipo = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +66,8 @@ public class PessoaActivity extends AppCompatActivity {
         radioButtonAmbas = findViewById(R.id.radioButtonAmbas);
         radioButtonEsquerda = findViewById(R.id.radioButtonEsquerda);
 
+        //inicializa ao abrir a activity
+        lerPreferencias();
 
         Intent intentAbertura = getIntent();
         Bundle bundle = intentAbertura.getExtras();
@@ -66,6 +77,11 @@ public class PessoaActivity extends AppCompatActivity {
 
             if (modo == MODO_NOVO) {
                 setTitle(getString(R.string.nova_pessoa));
+
+                if (sugerirTipo) {
+                    spinnerTipo.setSelection(ultimoTipo);
+                }
+
             } else {
                 setTitle(getString(R.string.editar_pessoa));
                 //extrai dados vindos do bundle
@@ -202,12 +218,13 @@ public class PessoaActivity extends AppCompatActivity {
                 media == pessoaOriginal.getMedia() &&
                 maoUsada == pessoaOriginal.getMaoUsada() &&
                 tipo == pessoaOriginal.getTipo()) {
-                //valores são iguais aos anteriores
+            //valores são iguais aos anteriores
             setResult(PessoaActivity.RESULT_CANCELED);
             finish();
             return;
         }
 
+        salvarUltimoTipo(tipo);
 
         Intent intentResposta = new Intent();
 
@@ -228,6 +245,13 @@ public class PessoaActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override//sempre chamado ao exibir o menu
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menuItemSugerirTipo);
+        item.setChecked(sugerirTipo);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int idMenuItem = item.getItemId();
@@ -238,8 +262,49 @@ public class PessoaActivity extends AppCompatActivity {
         } else if (idMenuItem == R.id.menuItemLimpar) {
             limparCampos();
             return true;
+        } else if (idMenuItem == R.id.menuItemSugerirTipo) {
+            boolean valor = !item.isChecked();
+            salvarSugerirTipo(valor);
+            item.setChecked(valor);
+
+            if (sugerirTipo) {
+                spinnerTipo.setSelection(ultimoTipo);
+            }
+
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void lerPreferencias() {
+        SharedPreferences shared = getSharedPreferences(PessoasActivity.ARQUIVO_PREFERENCIAS, Context.MODE_PRIVATE);
+
+        sugerirTipo = shared.getBoolean(KEY_SUGERIR_TIPO, sugerirTipo);
+        ultimoTipo = shared.getInt(KEY_ULTIMO_TIPO, ultimoTipo);
+    }
+
+    private void salvarSugerirTipo(boolean novoValor) {
+        SharedPreferences shared = getSharedPreferences(PessoasActivity.ARQUIVO_PREFERENCIAS, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = shared.edit();
+
+        editor.putBoolean(KEY_SUGERIR_TIPO, novoValor);
+
+        editor.commit();
+
+        sugerirTipo = novoValor;
+    }
+
+    private void salvarUltimoTipo(int novoValor) {
+        SharedPreferences shared = getSharedPreferences(PessoasActivity.ARQUIVO_PREFERENCIAS, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = shared.edit();
+
+        editor.putInt(KEY_ULTIMO_TIPO, novoValor);
+
+        editor.commit();
+
+        ultimoTipo = novoValor;
     }
 }

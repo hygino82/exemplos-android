@@ -36,13 +36,15 @@ public class PessoasActivity extends AppCompatActivity {
 
     private List<Pessoa> listaPessoas;
 
-    //edicao
     private int posicaoSelecionada = -1;
 
     private ActionMode actionMode;
 
     private View viewSelecionada;
     private Drawable backgroundDrawable;
+
+    public static final String ARQUIVO_PREFERENCIAS = "br.edu.utfpradroaldoferreira.PREFERENCIAS";
+
     private final ActionMode.Callback actionCallback = new ActionMode.Callback() {
 
         @Override
