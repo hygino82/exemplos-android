@@ -13,6 +13,9 @@
         android:title="@string/ordenacao"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/menuItemRestaurar"
+        android:title="@string/restaurar_padroes" />
+    <item
         android:id="@+id/menuItemSobre"
         android:title="@string/sobre" />
 </menu>

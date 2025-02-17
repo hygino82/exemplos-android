@@ -28,6 +28,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.view.ContextMenu;
+import android.widget.Toast;
 
 
 public class PessoasActivity extends AppCompatActivity {
@@ -47,7 +48,9 @@ public class PessoasActivity extends AppCompatActivity {
 
     public static final String ARQUIVO_PREFERENCIAS = "br.edu.utfpradroaldoferreira.PREFERENCIAS";
     public static final String KEY_ORDENACAO_ASCENDENTE = "ORDENACAO_ASCENDENTE";
-    private boolean ordenacaoAscendente = true;
+
+    public static final boolean PADRAO_INICIAL_ORDENACAO_ASCENDENTE = true;
+    private boolean ordenacaoAscendente = PADRAO_INICIAL_ORDENACAO_ASCENDENTE;
 
     private MenuItem menuItemOrdenacao;
 
@@ -218,6 +221,16 @@ public class PessoasActivity extends AppCompatActivity {
             atualizarIconeOrdenacao();
             ordenarLista();
             return true;
+        } else if (idMenuItem == R.id.menuItemRestaurar) {
+            restaurarPadroes();
+            atualizarIconeOrdenacao();
+            ordenarLista();
+
+            Toast.makeText(this,
+                    R.string.as_configuracoes_voltaram_para_o_padrao_de_instalacao,
+                    Toast.LENGTH_LONG).show();
+
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -336,5 +349,18 @@ public class PessoasActivity extends AppCompatActivity {
         } else {
             menuItemOrdenacao.setIcon(R.drawable.ic_action_descending_order);
         }
+    }
+
+    private void restaurarPadroes() {
+        SharedPreferences shared = getSharedPreferences(PessoasActivity.ARQUIVO_PREFERENCIAS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = shared.edit();
+
+        /*editor.remove(KEY_ORDENACAO_ASCENDENTE);
+        editor.remove(PessoaActivity.KEY_SUGERIR_TIPO);
+        editor.remove(PessoaActivity.KEY_ULTIMO_TIPO);*/
+
+        editor.clear();//apaga tudo
+        editor.commit();
+        ordenacaoAscendente = PADRAO_INICIAL_ORDENACAO_ASCENDENTE;
     }
 }
