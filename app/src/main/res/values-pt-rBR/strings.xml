@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nome">Nome</string>
+    <string name="media">Média</string>
+    <string name="limpar">Limpar</string>
+    <string name="salvar">Salvar</string>
+    <string name="nome_completo">Nome Completo</string>
+    <string name="media_final">Média Final</string>
+    <string name="campos_limpos">Campos limpos!</string>
+    <string name="faltou_entrar_com_o_nome">Faltou entrar com o Nome!</string>
+    <string name="faltou_entrar_com_a_media">Faltou entrar com a Média!</string>
+    <string name="nome_valor">"Nome: "</string>
+    <string name="media_valor">"Média: "</string>
+    <string name="valor_numerico_invalido">Valor numérico inválido</string>
+    <string name="a_media_informada_tem_um_valor_invalido">A media informada tem um valor inválido, deve ser um valor entre 0 e 100</string>
+    <string name="possui_bolsa">Possui Bolsa</string>
+    <string name="nao_possui_bolsa">Não possui bolsa</string>
+    <string name="esquerda">Esquerda</string>
+    <string name="direita">Direita</string>
+    <string name="ambas">Ambas</string>
+    <string name="faltou_preencher_a_mao_usada">Faltou preencher a Mão usada!</string>
+    <string name="mao_usada_valor">"Mão usada: "</string>
+    <string name="tipo">Tipo</string>
+    <string name="mao_usada">Mão usada</string>
+    <string name="aluno">Aluno</string>
+    <string name="monitor">Monitor</string>
+    <string name="tutor">Tutor</string>
+    <string name="professor">Professor</string>
+    <string name="coordenador">Coordenador</string>
+    <string name="o_spinner_tipo_nao_possui_valores">O Spinner tipo não possui valores</string>
+    <string name="tipo_valor">"Tipo: "</string>
+    <string name="logo_da_utfpr">Logo da UTFPR</string>
+    <string name="descricao">Exemplo do curso de Desenvolvimento Android</string>
+    <string name="autoria">Autor: <a href ="http://lattes.cnpq.br/3956885446716361">Adroaldo Hygino Ferreira</a> </string>
+    <string name="sobre">Sobre</string>
+    <string name="controle_de_pessoas">Controle de Pessoas</string>
+    <string name="cadastro">Cadastro</string>
+    <string name="adicionar">Adicionar</string>
+    <string name="cadastro_de_pessoas">Cadastro de Pessoas</string>
+    <string name="nenhum_aplicativo_para_abrir_paginas_web">Nenhum aplicativo para abrir páginas web!</string>
+    <string name="nenhum_aplicativo_para_enviar_e_mail">Nenhum aplicativo para enviar e-mail!</string>
+    <string name="editar">Editar</string>
+    <string name="excluir">Excluir</string>
+    <string name="nova_pessoa">Nova Pessoa</string>
+    <string name="editar_pessoa">Editar Pessoa</string>
+    <string name="sugerir_tipo">Sugerir Tipo</string>
+    <string name="ordenacao">Ordenação</string>
+    <string name="restaurar_padroes">Restaurar Padrões</string>
+    <string name="as_configuracoes_voltaram_para_o_padrao_de_instalacao">As configurações voltaram para o padrão de instalação!</string>
+    <string name="nome_utfpr_por_extenso">UNIVERSIDADE TECNOLÓGICA FEDERAL DO PARANÁ</string>
+</resources>
