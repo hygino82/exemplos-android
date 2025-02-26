@@ -6,16 +6,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import br.edu.utfpradroaldoferreira.utils.UtilsAlert;
 
@@ -116,6 +120,15 @@ public class PessoaActivity extends AppCompatActivity {
 
     public void limparCampos() {
 
+        final String nome = editTextNome.getText().toString();
+        final String media = editTextMedia.getText().toString();
+        final boolean bolsista = checkBoxBolsista.isChecked();
+        final int radioButtonId = radioGroupMaoUsada.getCheckedRadioButtonId();
+        final int tipo = spinnerTipo.getSelectedItemPosition();
+
+        final ScrollView scrollView = findViewById(R.id.main);
+        final View viewComFoco = scrollView.findFocus();
+
         editTextNome.setText(null);
         editTextMedia.setText(null);
         checkBoxBolsista.setChecked(false);
@@ -124,9 +137,36 @@ public class PessoaActivity extends AppCompatActivity {
 
         editTextNome.requestFocus();
 
-        Toast.makeText(this,
-                R.string.campos_limpos,
-                Toast.LENGTH_LONG).show();
+        Snackbar snackbar = Snackbar.make(scrollView,
+                R.string.as_entradas_foram_apagadas,
+                Snackbar.LENGTH_LONG);
+
+        snackbar.setAction(R.string.desfazer, new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                editTextNome.setText(nome);
+                editTextMedia.setText(media);
+                checkBoxBolsista.setChecked(bolsista);
+
+                if (radioButtonId == R.id.radioButtonDireita) {
+                    radioButtonDireita.setChecked(true);
+                } else if (radioButtonId == R.id.radioButtonEsquerda) {
+                    radioButtonEsquerda.setChecked(true);
+                } else if (radioButtonId == R.id.radioButtonAmbas) {
+                    radioButtonAmbas.setChecked(true);
+                }
+
+                spinnerTipo.setSelection(tipo);
+
+                if (viewComFoco != null) {
+                    viewComFoco.requestFocus();
+                }
+            }
+        });
+
+        snackbar.show();
     }
 
     public void salvarValores() {

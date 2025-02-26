@@ -58,4 +58,8 @@
     <string name="nao">No</string>
     <string name="deseja_apagar">Do you want do delete?\n\"%1$s\"</string>
     <string name="deseja_voltar_padroes">Do you want do restore defaults?</string>
+    <string name="desfazer">Undo</string>
+    <string name="alteracao_realizada">Data update done</string>
+    <string name="erro_de_conversao_de_tipo">Type conversion error!</string>
+    <string name="as_entradas_foram_apagadas">The entries have been deleted!</string>
 </resources>
