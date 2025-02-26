@@ -17,6 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import br.edu.utfpradroaldoferreira.utils.UtilsAlert;
+
 public class PessoaActivity extends AppCompatActivity {
 
     public static final String KEY_NOME = "KEY_NOME";
@@ -133,9 +135,7 @@ public class PessoaActivity extends AppCompatActivity {
 
         if (nome == null || nome.trim().isEmpty()) {
 
-            Toast.makeText(this,
-                    R.string.faltou_entrar_com_o_nome,
-                    Toast.LENGTH_LONG).show();
+            UtilsAlert.mostrarAviso(this, R.string.faltou_entrar_com_o_nome);
 
             editTextNome.requestFocus();
             return;
@@ -147,9 +147,7 @@ public class PessoaActivity extends AppCompatActivity {
 
         if (mediaString == null || mediaString.trim().isEmpty()) {
 
-            Toast.makeText(this,
-                    R.string.faltou_entrar_com_a_media,
-                    Toast.LENGTH_LONG).show();
+            UtilsAlert.mostrarAviso(this, R.string.faltou_entrar_com_a_media);
 
             editTextMedia.requestFocus();
             return;
@@ -162,9 +160,7 @@ public class PessoaActivity extends AppCompatActivity {
 
         } catch (NumberFormatException e) {
 
-            Toast.makeText(this,
-                    R.string.faltou_entrar_com_a_media,
-                    Toast.LENGTH_LONG).show();
+            UtilsAlert.mostrarAviso(this, R.string.faltou_entrar_com_a_media);
 
             editTextMedia.requestFocus();
             editTextMedia.setSelection(0, editTextMedia.getText().toString().length());
@@ -172,10 +168,7 @@ public class PessoaActivity extends AppCompatActivity {
         }
 
         if (media < 0 || media > 100) {
-
-            Toast.makeText(this,
-                    R.string.a_media_informada_tem_um_valor_invalido,
-                    Toast.LENGTH_LONG).show();
+            UtilsAlert.mostrarAviso(this, R.string.a_media_informada_tem_um_valor_invalido);
 
             editTextMedia.requestFocus();
             editTextMedia.setSelection(0, editTextMedia.getText().toString().length());
@@ -193,9 +186,7 @@ public class PessoaActivity extends AppCompatActivity {
         } else if (radioButtonId == R.id.radioButtonAmbas) {
             maoUsada = MaoUsada.Ambas;
         } else {
-            Toast.makeText(this,
-                    R.string.faltou_preencher_a_mao_usada,
-                    Toast.LENGTH_LONG).show();
+            UtilsAlert.mostrarAviso(this, R.string.faltou_preencher_a_mao_usada);
             return;
         }
 
@@ -203,10 +194,7 @@ public class PessoaActivity extends AppCompatActivity {
         int tipo = spinnerTipo.getSelectedItemPosition();
 
         if (tipo == AdapterView.INVALID_POSITION) {
-
-            Toast.makeText(this,
-                    R.string.o_spinner_tipo_nao_possui_valores,
-                    Toast.LENGTH_LONG).show();
+            UtilsAlert.mostrarAviso(this, R.string.o_spinner_tipo_nao_possui_valores);
             return;
         }
 

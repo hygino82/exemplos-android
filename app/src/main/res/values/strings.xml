@@ -51,4 +51,11 @@
     <string name="restaurar_padroes">Restore Defaults</string>
     <string name="as_configuracoes_voltaram_para_o_padrao_de_instalacao">The settings have been restored to installation default!</string>
     <string name="nome_utfpr_por_extenso">FEDERAL UNIVERSITY TECHNOLOGIC - PARANÁ</string>
+    <string name="aviso">Warning</string>
+    <string name="ok">OK</string>
+    <string name="confirmacao">Confirmation</string>
+    <string name="sim">Yes</string>
+    <string name="nao">No</string>
+    <string name="deseja_apagar">Do you want do delete?\n\"%1$s\"</string>
+    <string name="deseja_voltar_padroes">Do you want do restore defaults?</string>
 </resources>

@@ -1,7 +1,6 @@
 package br.edu.utfpradroaldoferreira;
 
 import java.util.Comparator;
-
 public class Pessoa {
     public static Comparator<Pessoa> ordenacaoCrescente = new Comparator<Pessoa>() {
         @Override

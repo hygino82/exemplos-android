@@ -1,6 +1,7 @@
 package br.edu.utfpradroaldoferreira;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -29,6 +30,8 @@ import java.util.List;
 import android.content.Intent;
 import android.view.ContextMenu;
 import android.widget.Toast;
+
+import br.edu.utfpradroaldoferreira.utils.UtilsAlert;
 
 
 public class PessoasActivity extends AppCompatActivity {
@@ -78,7 +81,7 @@ public class PessoasActivity extends AppCompatActivity {
                 return true;
             } else if (idMenuItem == R.id.menuItemExcluir) {
                 excluirPessoa();
-                mode.finish();
+                //remover mode.finish();
                 return true;
             } else {
                 return false;
@@ -149,7 +152,9 @@ public class PessoasActivity extends AppCompatActivity {
 
                 viewSelecionada = view;
                 backgroundDrawable = view.getBackground();
-                view.setBackgroundColor(Color.LTGRAY);
+
+                view.setBackgroundColor(getColor(R.color.corSelecionado));
+
                 recyclerViewPessoas.setEnabled(false);
                 actionMode = startSupportActionMode(actionCallback);
                 return true;
@@ -222,14 +227,7 @@ public class PessoasActivity extends AppCompatActivity {
             ordenarLista();
             return true;
         } else if (idMenuItem == R.id.menuItemRestaurar) {
-            restaurarPadroes();
-            atualizarIconeOrdenacao();
-            ordenarLista();
-
-            Toast.makeText(this,
-                    R.string.as_configuracoes_voltaram_para_o_padrao_de_instalacao,
-                    Toast.LENGTH_LONG).show();
-
+            confirmarRestaurarPadroes();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -258,8 +256,19 @@ public class PessoasActivity extends AppCompatActivity {
     }
 
     private void excluirPessoa() {
-        listaPessoas.remove(posicaoSelecionada);
-        pessoaRecyclerViewAdapter.notifyDataSetChanged();
+        Pessoa pessoa = listaPessoas.get(posicaoSelecionada);
+        String mensagem = getString(R.string.deseja_apagar, pessoa.getNome());
+
+        DialogInterface.OnClickListener listenerSim = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                listaPessoas.remove(posicaoSelecionada);
+                pessoaRecyclerViewAdapter.notifyItemRemoved(posicaoSelecionada); // no caso do ListView use notifyDataSetChanged()
+                actionMode.finish();
+            }
+        };
+
+        UtilsAlert.confirmarAcao(this, mensagem, listenerSim, null);
     }
 
     private void editarPessoa() {
@@ -362,5 +371,24 @@ public class PessoasActivity extends AppCompatActivity {
         editor.clear();//apaga tudo
         editor.commit();
         ordenacaoAscendente = PADRAO_INICIAL_ORDENACAO_ASCENDENTE;
+    }
+
+    private void confirmarRestaurarPadroes() {
+
+        DialogInterface.OnClickListener listenerSim = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                restaurarPadroes();
+                atualizarIconeOrdenacao();
+                ordenarLista();
+
+                Toast.makeText(PessoasActivity.this,
+                        R.string.as_configuracoes_voltaram_para_o_padrao_de_instalacao,
+                        Toast.LENGTH_LONG).show();
+            }
+        };
+
+        UtilsAlert.confirmarAcao(this, R.string.deseja_voltar_padroes, listenerSim, null);
     }
 }

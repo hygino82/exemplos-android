@@ -8,4 +8,5 @@
 
         <item name="android:textColorLink">@color/amarelo</item>
     </style>
+    <color name="corSelecionado">@color/cinza_transparente</color>
 </resources>
