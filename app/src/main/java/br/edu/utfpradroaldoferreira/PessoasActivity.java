@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,8 @@ import java.util.List;
 import android.content.Intent;
 import android.view.ContextMenu;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import br.edu.utfpradroaldoferreira.utils.UtilsAlert;
 
@@ -307,7 +310,19 @@ public class PessoasActivity extends AppCompatActivity {
                             int tipo = bundle.getInt(PessoaActivity.KEY_TIPO);
                             String maoUsadaTexto = bundle.getString(PessoaActivity.KEY_MAO_USADA);
 
-                            Pessoa pessoa = listaPessoas.get(posicaoSelecionada);
+                            final Pessoa pessoa = listaPessoas.get(posicaoSelecionada);
+
+                            final Pessoa clonePessoaOriginal;
+
+                            try {
+                                clonePessoaOriginal = (Pessoa) pessoa.clone();
+                            } catch (CloneNotSupportedException e) {
+                                e.printStackTrace();
+                                UtilsAlert.mostrarAviso(PessoasActivity.this,
+                                        R.string.erro_de_conversao_de_tipo);
+                                return;
+                            }
+
                             pessoa.setNome(nome);
                             pessoa.setMedia(media);
                             pessoa.setBolsista(bolsista);
@@ -315,6 +330,27 @@ public class PessoasActivity extends AppCompatActivity {
                             pessoa.setMaoUsada(MaoUsada.valueOf(maoUsadaTexto));
 
                             ordenarLista();
+
+                            final ConstraintLayout constraintLayout = findViewById(R.id.main);
+
+                            Snackbar snackBar = Snackbar.make(constraintLayout,
+                                    R.string.alteracao_realizada,
+                                    Snackbar.LENGTH_LONG);
+
+
+                            snackBar.setAction(R.string.desfazer, new View.OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+
+                                    listaPessoas.remove(pessoa);
+                                    listaPessoas.add(clonePessoaOriginal);
+
+                                    ordenarLista();
+                                }
+                            });
+
+                            snackBar.show();
                         }
                     }
                     posicaoSelecionada = -1;

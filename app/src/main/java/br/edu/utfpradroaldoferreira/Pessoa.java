@@ -1,7 +1,10 @@
 package br.edu.utfpradroaldoferreira;
 
+import androidx.annotation.NonNull;
+
 import java.util.Comparator;
-public class Pessoa {
+
+public class Pessoa implements Cloneable {
     public static Comparator<Pessoa> ordenacaoCrescente = new Comparator<Pessoa>() {
         @Override
         public int compare(Pessoa pessoa1, Pessoa pessoa2) {
@@ -81,5 +84,13 @@ public class Pessoa {
                 bolsista + '\n' +
                 tipo + '\n' +
                 maoUsada;
+    }
+
+    @NonNull
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        /* Como esta classe só tem atributos primitivos ou imutáveis,
+           o clone da classe pai já resolve */
+        return super.clone();
     }
 }
