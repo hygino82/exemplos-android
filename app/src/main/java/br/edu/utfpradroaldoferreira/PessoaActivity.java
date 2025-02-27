@@ -22,16 +22,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import br.edu.utfpradroaldoferreira.modelo.MaoUsada;
 import br.edu.utfpradroaldoferreira.modelo.Pessoa;
+import br.edu.utfpradroaldoferreira.persistencia.PessoasDatabase;
 import br.edu.utfpradroaldoferreira.utils.UtilsAlert;
 
 public class PessoaActivity extends AppCompatActivity {
-
-    public static final String KEY_NOME = "KEY_NOME";
-    public static final String KEY_MEDIA = "KEY_MEDIA";
-    public static final String KEY_BOLSISTA = "KEY_BOLSISTA";
-    public static final String KEY_TIPO = "KEY_TIPO";
-    public static final String KEY_MAO_USADA = "KEY_MAO_USADA";
-
+    public static final String KEY_ID = "ID";
     public static final String KEY_MODO = "MODO";
     //define o modo em que a activity de cadastro será aberta
 
@@ -91,21 +86,19 @@ public class PessoaActivity extends AppCompatActivity {
 
             } else {
                 setTitle(getString(R.string.editar_pessoa));
-                //extrai dados vindos do bundle
-                String nome = bundle.getString(PessoaActivity.KEY_NOME);
-                int media = bundle.getInt(PessoaActivity.KEY_MEDIA);
-                boolean bolsista = bundle.getBoolean(PessoaActivity.KEY_BOLSISTA);
-                int tipo = bundle.getInt(PessoaActivity.KEY_TIPO);
-                String maoUsadaTexto = bundle.getString(PessoaActivity.KEY_MAO_USADA);
 
-                MaoUsada maoUsada = MaoUsada.valueOf(maoUsadaTexto);
+                long id = bundle.getLong(KEY_ID);
 
-                pessoaOriginal = new Pessoa(nome, media, bolsista, tipo, maoUsada);
+                PessoasDatabase database = PessoasDatabase.getInstance(this);
 
-                editTextNome.setText(nome);
-                editTextMedia.setText(String.valueOf(media));
-                checkBoxBolsista.setChecked(bolsista);
-                spinnerTipo.setSelection(tipo);
+                pessoaOriginal = database.getPessoaDao().queryForId(id);
+
+                editTextNome.setText(pessoaOriginal.getNome());
+                editTextMedia.setText(String.valueOf(pessoaOriginal.getMedia()));
+                checkBoxBolsista.setChecked(pessoaOriginal.isBolsista());
+                spinnerTipo.setSelection(pessoaOriginal.getTipo());
+
+                MaoUsada maoUsada = pessoaOriginal.getMaoUsada();
 
                 if (maoUsada == MaoUsada.Direita) {
                     radioButtonDireita.setChecked(true);
@@ -115,6 +108,9 @@ public class PessoaActivity extends AppCompatActivity {
                 } else if (maoUsada == MaoUsada.Ambas) {
                     radioButtonAmbas.setChecked(true);
                 }
+
+                editTextNome.requestFocus();
+                editTextNome.setSelection(editTextNome.getText().length());
             }
         }
     }
@@ -241,27 +237,41 @@ public class PessoaActivity extends AppCompatActivity {
 
         boolean bolsista = checkBoxBolsista.isChecked();
 
-        if (modo == MODO_EDITAR &&
-                nome.equalsIgnoreCase(pessoaOriginal.getNome()) &&
-                bolsista == pessoaOriginal.isBolsista() &&
-                media == pessoaOriginal.getMedia() &&
-                maoUsada == pessoaOriginal.getMaoUsada() &&
-                tipo == pessoaOriginal.getTipo()) {
-            //valores são iguais aos anteriores
+        Pessoa pessoa = new Pessoa(nome, media, bolsista, tipo, maoUsada);
+
+        if (pessoa.equals(pessoaOriginal)) {
+            //valores iguais aos anteriores, não precisa salvar nada
             setResult(PessoaActivity.RESULT_CANCELED);
             finish();
             return;
         }
 
-        salvarUltimoTipo(tipo);
-
         Intent intentResposta = new Intent();
 
-        intentResposta.putExtra(KEY_NOME, nome);
-        intentResposta.putExtra(KEY_MEDIA, media);
-        intentResposta.putExtra(KEY_BOLSISTA, bolsista);
-        intentResposta.putExtra(KEY_TIPO, tipo);
-        intentResposta.putExtra(KEY_MAO_USADA, maoUsada.toString());
+        PessoasDatabase database = PessoasDatabase.getInstance(this);
+
+        if (modo == MODO_NOVO) {
+            long novoId = database.getPessoaDao().insert(pessoa);
+            //novoId=-33;//teste
+            if (novoId <= 0) {//se houver erro na persistencia nao gera o id
+                UtilsAlert.mostrarAviso(this, R.string.erro_ao_tentar_inserir);
+                return;
+            }
+
+            pessoa.setId(novoId);
+        } else {
+            pessoa.setId(pessoaOriginal.getId());
+
+            int quantidadeAlterada = database.getPessoaDao().update(pessoa);
+
+            if (quantidadeAlterada != 1) {
+                UtilsAlert.mostrarAviso(this, R.string.erro_ao_tentar_atualizar);
+            }
+        }
+
+        salvarUltimoTipo(tipo);
+
+        intentResposta.putExtra(KEY_ID, pessoa.getId());
 
         setResult(PessoaActivity.RESULT_OK, intentResposta);
 

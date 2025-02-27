@@ -1,5 +1,7 @@
 package br.edu.utfpradroaldoferreira;
 
+import static br.edu.utfpradroaldoferreira.PessoaActivity.KEY_ID;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,12 +30,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import br.edu.utfpradroaldoferreira.modelo.MaoUsada;
 import br.edu.utfpradroaldoferreira.modelo.Pessoa;
+import br.edu.utfpradroaldoferreira.persistencia.PessoasDatabase;
 import br.edu.utfpradroaldoferreira.utils.UtilsAlert;
 
 
@@ -124,15 +125,19 @@ public class PessoasActivity extends AppCompatActivity {
         lerPreferencias();
         popularListaPessoas();
 
-        ordenarLista();//usa por causa dos dados mocados remover na entrega da atividade
+        //ordenarLista();//usa por causa dos dados mocados remover na entrega da atividade
     }
 
     private void popularListaPessoas() {
+        //carregar lista a partir do banco de dados
+        PessoasDatabase database = PessoasDatabase.getInstance(this);
 
-        listaPessoas = new ArrayList<>();
+        if (ordenacaoAscendente) {
+            listaPessoas = database.getPessoaDao().queryAllAscending();
+        } else {
+            listaPessoas = database.getPessoaDao().queryAllDownward();
+        }
 
-        //para testes
-        //listaPessoas.addAll(Factory.gerarListaPessoas());
 
         pessoaRecyclerViewAdapter = new PessoaRecyclerViewAdapter(this, listaPessoas);
 
@@ -189,13 +194,12 @@ public class PessoasActivity extends AppCompatActivity {
 
                         if (bundle != null) {
 
-                            String nome = bundle.getString(PessoaActivity.KEY_NOME);
-                            int media = bundle.getInt(PessoaActivity.KEY_MEDIA);
-                            boolean bolsista = bundle.getBoolean(PessoaActivity.KEY_BOLSISTA);
-                            int tipo = bundle.getInt(PessoaActivity.KEY_TIPO);
-                            String maoUsadaTexto = bundle.getString(PessoaActivity.KEY_MAO_USADA);
+                            long id = bundle.getLong(KEY_ID);
 
-                            Pessoa pessoa = new Pessoa(nome, media, bolsista, tipo, MaoUsada.valueOf(maoUsadaTexto));
+                            PessoasDatabase database = PessoasDatabase.getInstance(PessoasActivity.this);
+
+                            //recupera a pessoa pelo id
+                            Pessoa pessoa = database.getPessoaDao().queryForId(id);
 
                             listaPessoas.add(pessoa);
 
@@ -259,13 +263,21 @@ public class PessoasActivity extends AppCompatActivity {
     }
 
     private void excluirPessoa() {
-        Pessoa pessoa = listaPessoas.get(posicaoSelecionada);
+        final Pessoa pessoa = listaPessoas.get(posicaoSelecionada);
         String mensagem = getString(R.string.deseja_apagar, pessoa.getNome());
 
         DialogInterface.OnClickListener listenerSim = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                listaPessoas.remove(posicaoSelecionada);
+                PessoasDatabase database = PessoasDatabase.getInstance(PessoasActivity.this);
+                int quantidadeAlterada = database.getPessoaDao().delete(pessoa);//remove do banco de dados
+
+                if (quantidadeAlterada != 1) {
+                    UtilsAlert.mostrarAviso(PessoasActivity.this, R.string.erro_ao_tentar_excluir);
+                    return;
+                }
+
+                listaPessoas.remove(posicaoSelecionada);//excluí da memória
                 pessoaRecyclerViewAdapter.notifyItemRemoved(posicaoSelecionada); // no caso do ListView use notifyDataSetChanged()
                 actionMode.finish();
             }
@@ -280,12 +292,7 @@ public class PessoasActivity extends AppCompatActivity {
         Intent intentAbertura = new Intent(this, PessoaActivity.class);
 
         intentAbertura.putExtra(PessoaActivity.KEY_MODO, PessoaActivity.MODO_EDITAR);
-        intentAbertura.putExtra(PessoaActivity.KEY_NOME, pessoa.getNome());
-        intentAbertura.putExtra(PessoaActivity.KEY_MEDIA, pessoa.getMedia());
-        intentAbertura.putExtra(PessoaActivity.KEY_BOLSISTA, pessoa.isBolsista());
-        intentAbertura.putExtra(PessoaActivity.KEY_TIPO, pessoa.getTipo());
-        intentAbertura.putExtra(PessoaActivity.KEY_MAO_USADA, pessoa.getMaoUsada().toString());
-
+        intentAbertura.putExtra(KEY_ID, pessoa.getId());
         launcherEditarPessoa.launch(intentAbertura);
     }
 
@@ -303,32 +310,15 @@ public class PessoasActivity extends AppCompatActivity {
                         Bundle bundle = intent.getExtras();
 
                         if (bundle != null) {
+                            //dados originais vindos o array list
+                            final Pessoa pessoaOriginal = listaPessoas.get(posicaoSelecionada);
 
-                            String nome = bundle.getString(PessoaActivity.KEY_NOME);
-                            int media = bundle.getInt(PessoaActivity.KEY_MEDIA);
-                            boolean bolsista = bundle.getBoolean(PessoaActivity.KEY_BOLSISTA);
-                            int tipo = bundle.getInt(PessoaActivity.KEY_TIPO);
-                            String maoUsadaTexto = bundle.getString(PessoaActivity.KEY_MAO_USADA);
+                            long id = bundle.getLong(KEY_ID);
+                            final PessoasDatabase database = PessoasDatabase.getInstance(PessoasActivity.this);
+                            //recupera a pessoa editada
+                            final Pessoa pessoaEditada = database.getPessoaDao().queryForId(id);
 
-                            final Pessoa pessoa = listaPessoas.get(posicaoSelecionada);
-
-                            final Pessoa clonePessoaOriginal;
-
-                            try {
-                                clonePessoaOriginal = (Pessoa) pessoa.clone();
-                            } catch (CloneNotSupportedException e) {
-                                e.printStackTrace();
-                                UtilsAlert.mostrarAviso(PessoasActivity.this,
-                                        R.string.erro_de_conversao_de_tipo);
-                                return;
-                            }
-
-                            pessoa.setNome(nome);
-                            pessoa.setMedia(media);
-                            pessoa.setBolsista(bolsista);
-                            pessoa.setTipo(tipo);
-                            pessoa.setMaoUsada(MaoUsada.valueOf(maoUsadaTexto));
-
+                            listaPessoas.set(posicaoSelecionada, pessoaEditada);
                             ordenarLista();
 
                             final ConstraintLayout constraintLayout = findViewById(R.id.main);
@@ -342,9 +332,16 @@ public class PessoasActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onClick(View v) {
+                                    //retorna os dados originais
+                                    int quantidadeAlterada = database.getPessoaDao().update(pessoaOriginal);
 
-                                    listaPessoas.remove(pessoa);
-                                    listaPessoas.add(clonePessoaOriginal);
+                                    if (quantidadeAlterada != 1) {
+                                        UtilsAlert.mostrarAviso(PessoasActivity.this, R.string.erro_ao_tentar_atualizar);
+                                        return;
+                                    }
+
+                                    listaPessoas.remove(pessoaEditada);
+                                    listaPessoas.add(pessoaOriginal);
 
                                     ordenarLista();
                                 }
@@ -399,10 +396,6 @@ public class PessoasActivity extends AppCompatActivity {
     private void restaurarPadroes() {
         SharedPreferences shared = getSharedPreferences(PessoasActivity.ARQUIVO_PREFERENCIAS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = shared.edit();
-
-        /*editor.remove(KEY_ORDENACAO_ASCENDENTE);
-        editor.remove(PessoaActivity.KEY_SUGERIR_TIPO);
-        editor.remove(PessoaActivity.KEY_ULTIMO_TIPO);*/
 
         editor.clear();//apaga tudo
         editor.commit();

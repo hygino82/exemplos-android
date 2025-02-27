@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 @Entity
 public class Pessoa implements Cloneable {
@@ -109,5 +110,22 @@ public class Pessoa implements Cloneable {
         /* Como esta classe só tem atributos primitivos ou imutáveis,
            o clone da classe pai já resolve */
         return super.clone();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pessoa pessoa = (Pessoa) o;
+        return media == pessoa.media &&
+                bolsista == pessoa.bolsista &&
+                tipo == pessoa.tipo &&
+                nome.equals(pessoa.nome) &&//foi modificado para compara usando equals de string
+                maoUsada == pessoa.maoUsada;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, media, bolsista, tipo, maoUsada);
     }
 }
