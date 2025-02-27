@@ -1,4 +1,4 @@
-package br.edu.utfpradroaldoferreira;
+package br.edu.utfpradroaldoferreira.modelo;
 
 public enum MaoUsada {
     Direita,//Ordinal 0

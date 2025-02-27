@@ -1,4 +1,4 @@
-package br.edu.utfpradroaldoferreira;
+package br.edu.utfpradroaldoferreira.modelo;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,9 +1,13 @@
-package br.edu.utfpradroaldoferreira;
+package br.edu.utfpradroaldoferreira.modelo;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.util.Comparator;
 
+@Entity
 public class Pessoa implements Cloneable {
     public static Comparator<Pessoa> ordenacaoCrescente = new Comparator<Pessoa>() {
         @Override
@@ -18,6 +22,11 @@ public class Pessoa implements Cloneable {
             return -1 * pessoa1.getNome().compareToIgnoreCase(pessoa2.getNome());
         }
     };
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+
+    @NonNull
+    @ColumnInfo(index = true)
     private String nome;
 
     private int media;
@@ -35,6 +44,14 @@ public class Pessoa implements Cloneable {
         this.bolsista = bolsista;
         this.tipo = tipo;
         this.maoUsada = maoUsada;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNome() {

@@ -2,15 +2,17 @@ package br.edu.utfpradroaldoferreira;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -24,16 +26,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.content.Intent;
-import android.view.ContextMenu;
-import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
-
+import br.edu.utfpradroaldoferreira.modelo.MaoUsada;
+import br.edu.utfpradroaldoferreira.modelo.Pessoa;
 import br.edu.utfpradroaldoferreira.utils.UtilsAlert;
 
 
@@ -132,7 +132,7 @@ public class PessoasActivity extends AppCompatActivity {
         listaPessoas = new ArrayList<>();
 
         //para testes
-        listaPessoas.addAll(Factory.gerarListaPessoas());
+        //listaPessoas.addAll(Factory.gerarListaPessoas());
 
         pessoaRecyclerViewAdapter = new PessoaRecyclerViewAdapter(this, listaPessoas);
 

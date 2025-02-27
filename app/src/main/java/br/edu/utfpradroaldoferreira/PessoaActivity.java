@@ -14,13 +14,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import br.edu.utfpradroaldoferreira.modelo.MaoUsada;
+import br.edu.utfpradroaldoferreira.modelo.Pessoa;
 import br.edu.utfpradroaldoferreira.utils.UtilsAlert;
 
 public class PessoaActivity extends AppCompatActivity {

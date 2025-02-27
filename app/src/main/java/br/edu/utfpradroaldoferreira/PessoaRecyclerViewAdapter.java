@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import br.edu.utfpradroaldoferreira.modelo.Pessoa;
+
 public class PessoaRecyclerViewAdapter extends RecyclerView.Adapter<PessoaRecyclerViewAdapter.PessoaHolder> {
 
     private OnItemClickListener onItemClickListener;
