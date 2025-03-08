@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "d9f33efb9aa9adde5a0bc8b024753a10",
+    "version": 2,
+    "identityHash": "54ba575c4b8e6607759a1f24f47275c3",
     "entities": [
       {
         "tableName": "Pessoa",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nome` TEXT NOT NULL, `media` INTEGER NOT NULL, `bolsista` INTEGER NOT NULL, `tipo` INTEGER NOT NULL, `maoUsada` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nome` TEXT NOT NULL, `media` INTEGER NOT NULL, `bolsista` INTEGER NOT NULL, `tipo` INTEGER NOT NULL, `maoUsada` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -41,7 +41,7 @@
           {
             "fieldPath": "maoUsada",
             "columnName": "maoUsada",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": false
           }
         ],
@@ -68,7 +68,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd9f33efb9aa9adde5a0bc8b024753a10')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '54ba575c4b8e6607759a1f24f47275c3')"
     ]
   }
 }

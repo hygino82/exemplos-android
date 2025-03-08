@@ -9,7 +9,7 @@ import androidx.room.TypeConverters;
 
 import br.edu.utfpradroaldoferreira.modelo.Pessoa;
 
-@Database(entities = {Pessoa.class}, version = 1)
+@Database(entities = {Pessoa.class}, version = 2)
 @TypeConverters({ConverterMaoUsada.class})
 public abstract class PessoasDatabase extends RoomDatabase {
 
@@ -20,9 +20,9 @@ public abstract class PessoasDatabase extends RoomDatabase {
 
     public abstract PessoaDao getPessoaDao();
 
-    private static  PessoasDatabase INSTANCE;
+    private static PessoasDatabase INSTANCE;
 
-    public static PessoasDatabase getInstance(final Context context){
+    public static PessoasDatabase getInstance(final Context context) {
 
         /* O uso do padrão Singleton garante que apenas uma instância da classe seja criada,
            e define um ponto único e global de acesso a ela */
@@ -30,15 +30,25 @@ public abstract class PessoasDatabase extends RoomDatabase {
         /* A Verificação Dupla de Bloqueio otimiza o desempenho no caso
            de várias threads usarem uma instância desta classe */
 
-        if (INSTANCE == null){
+        if (INSTANCE == null) {
 
-            synchronized (PessoasDatabase.class){
+            synchronized (PessoasDatabase.class) {
 
-                if (INSTANCE == null){
+                if (INSTANCE == null) {
 
-                    INSTANCE = Room.databaseBuilder(context,
+                    /*INSTANCE = Room.databaseBuilder(context,
                             PessoasDatabase.class,
-                            "pessoas.db").allowMainThreadQueries().build();
+                            "pessoas.db").allowMainThreadQueries().build();*/
+                    Builder builder = Room.databaseBuilder(context, PessoasDatabase.class, "pessoas.db");
+
+                    builder.allowMainThreadQueries();
+
+                    builder.addMigrations(new Migrar_1_2());
+
+                    //builder.fallbackToDestructiveMigration();
+                    //destrói o banco de dados caso a versão seja diferente
+
+                    INSTANCE = (PessoasDatabase) builder.build();
                 }
             }
         }

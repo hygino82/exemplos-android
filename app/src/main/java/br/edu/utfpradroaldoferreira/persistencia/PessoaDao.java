@@ -28,12 +28,12 @@ public interface PessoaDao {
     @Update
     int update(Pessoa pessoa);
 
-    @Query("SELECT * FROM pessoa WHERE id=:id")
+    @Query("SELECT * FROM Pessoa WHERE id=:id")
     Pessoa queryForId(long id);
 
-    @Query("SELECT * FROM pessoa ORDER BY nome ASC")
+    @Query("SELECT * FROM Pessoa ORDER BY nome ASC")
     List<Pessoa> queryAllAscending();
 
-    @Query("SELECT * FROM pessoa ORDER BY nome DESC")
+    @Query("SELECT * FROM Pessoa ORDER BY nome DESC")
     List<Pessoa> queryAllDownward();
 }
