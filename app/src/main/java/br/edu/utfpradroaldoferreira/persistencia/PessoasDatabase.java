@@ -5,10 +5,12 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import br.edu.utfpradroaldoferreira.modelo.Pessoa;
 
-@Database(entities = {Pessoa.class}, version = 1, exportSchema = false)
+@Database(entities = {Pessoa.class}, version = 1)
+@TypeConverters({ConverterMaoUsada.class})
 public abstract class PessoasDatabase extends RoomDatabase {
 
     /* O Room é uma biblioteca de persistência, que faz o papel de uma ferramenta
