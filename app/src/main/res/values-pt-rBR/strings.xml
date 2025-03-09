@@ -61,4 +61,8 @@
     <string name="erro_ao_tentar_inserir">Erro ao tentar inserir!</string>
     <string name="erro_ao_tentar_atualizar">Erro ao tentar atualizar!</string>
     <string name="erro_ao_tentar_excluir">Erro ao tentar excluir!</string>
+    <string name="data_nascimento">Data de nascimento</string>
+    <string name="faltou_entrar_com_data_nascimento">Faltou entrar com a data de nascimento!</string>
+    <string name="idade_invalida">Idade precisa ser entre 1 e 65 anos!</string>
+    <string name="data_nascimento_valor">"Nascimento: "</string>
 </resources>

@@ -13,7 +13,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/possui_bolsa"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRotuloMedia" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRotuloDataNascimento" />
 
     <TextView
         android:id="@+id/textViewRotuloNome"
@@ -58,6 +58,27 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewValorNome" />
 
     <TextView
+        android:id="@+id/textViewRotuloDataNascimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/data_nascimento_valor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRotuloMedia" />
+
+    <TextView
+        android:id="@+id/textViewValorDataNascimento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewRotuloDataNascimento"
+        app:layout_constraintTop_toBottomOf="@+id/textViewValorMedia" />
+
+    <TextView
         android:id="@+id/textViewRotuloTipo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -98,4 +119,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewRotuloMaoUsada"
         app:layout_constraintTop_toBottomOf="@+id/textViewValorTipo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,8 +9,8 @@ import androidx.room.TypeConverters;
 
 import br.edu.utfpradroaldoferreira.modelo.Pessoa;
 
-@Database(entities = {Pessoa.class}, version = 2)
-@TypeConverters({ConverterMaoUsada.class})
+@Database(entities = {Pessoa.class}, version = 3 )
+@TypeConverters({ConverterMaoUsada.class, ConverterDataNascimento.class})
 public abstract class PessoasDatabase extends RoomDatabase {
 
     /* O Room é uma biblioteca de persistência, que faz o papel de uma ferramenta
@@ -44,6 +44,7 @@ public abstract class PessoasDatabase extends RoomDatabase {
                     builder.allowMainThreadQueries();
 
                     builder.addMigrations(new Migrar_1_2());
+                    builder.addMigrations(new Migrar_2_3());
 
                     //builder.fallbackToDestructiveMigration();
                     //destrói o banco de dados caso a versão seja diferente

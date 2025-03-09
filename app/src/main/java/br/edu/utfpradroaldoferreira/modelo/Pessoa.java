@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -38,13 +39,16 @@ public class Pessoa implements Cloneable {
 
     private MaoUsada maoUsada;
 
+    private LocalDate dataNascimento;
+
     //não temos o construtor vazio obrigatoriamente teremos de usar esse construtor
-    public Pessoa(String nome, int media, boolean bolsista, int tipo, MaoUsada maoUsada) {
+    public Pessoa(String nome, int media, boolean bolsista, int tipo, MaoUsada maoUsada, LocalDate dataNascimento) {
         this.nome = nome;
         this.media = media;
         this.bolsista = bolsista;
         this.tipo = tipo;
         this.maoUsada = maoUsada;
+        this.dataNascimento = dataNascimento;
     }
 
     public long getId() {
@@ -95,13 +99,22 @@ public class Pessoa implements Cloneable {
         this.maoUsada = maoUsada;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     @Override
     public String toString() {
         return nome + '\n' +
                 media + '\n' +
                 bolsista + '\n' +
                 tipo + '\n' +
-                maoUsada;
+                maoUsada + '\n' +
+                dataNascimento;
     }
 
     @NonNull
@@ -117,6 +130,15 @@ public class Pessoa implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pessoa pessoa = (Pessoa) o;
+
+        if (dataNascimento == null && pessoa.dataNascimento != null) {
+            return false;
+        }
+
+        if (dataNascimento != null && dataNascimento.equals(pessoa.dataNascimento) == false) {
+            return false;
+        }
+
         return media == pessoa.media &&
                 bolsista == pessoa.bolsista &&
                 tipo == pessoa.tipo &&
@@ -126,6 +148,6 @@ public class Pessoa implements Cloneable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, media, bolsista, tipo, maoUsada);
+        return Objects.hash(nome, media, bolsista, tipo, maoUsada, dataNascimento);
     }
 }

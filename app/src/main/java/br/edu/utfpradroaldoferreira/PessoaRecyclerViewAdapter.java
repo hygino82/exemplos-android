@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import br.edu.utfpradroaldoferreira.modelo.Pessoa;
+import br.edu.utfpradroaldoferreira.utils.UtilsLocalDate;
 
 public class PessoaRecyclerViewAdapter extends RecyclerView.Adapter<PessoaRecyclerViewAdapter.PessoaHolder> {
 
@@ -61,6 +62,7 @@ public class PessoaRecyclerViewAdapter extends RecyclerView.Adapter<PessoaRecycl
             View.OnCreateContextMenuListener {
         public TextView textViewValorNome;
         public TextView textViewValorMedia;
+        public TextView getTextViewValorDataNascimento;
         public TextView textViewValorBolsista;
         public TextView textViewValorTipo;
         public TextView textViewValorMaoUsada;
@@ -70,6 +72,9 @@ public class PessoaRecyclerViewAdapter extends RecyclerView.Adapter<PessoaRecycl
 
             textViewValorNome = itemView.findViewById(R.id.textViewValorNome);
             textViewValorMedia = itemView.findViewById(R.id.textViewValorMedia);
+
+            getTextViewValorDataNascimento = itemView.findViewById(R.id.textViewValorDataNascimento);
+
             textViewValorBolsista = itemView.findViewById(R.id.textViewValorBolsista);
             textViewValorTipo = itemView.findViewById(R.id.textViewValorTipo);
             textViewValorMaoUsada = itemView.findViewById(R.id.textViewValorMaoUsada);
@@ -140,6 +145,8 @@ public class PessoaRecyclerViewAdapter extends RecyclerView.Adapter<PessoaRecycl
 
         holder.textViewValorNome.setText(pessoa.getNome());
         holder.textViewValorMedia.setText(String.valueOf(pessoa.getMedia()));
+
+        holder.getTextViewValorDataNascimento.setText(UtilsLocalDate.formatLocalDateToString(pessoa.getDataNascimento()));
 
         if (pessoa.isBolsista()) {
             holder.textViewValorBolsista.setText(R.string.possui_bolsa);

@@ -1,5 +1,6 @@
 package br.edu.utfpradroaldoferreira;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,10 +22,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDate;
+
 import br.edu.utfpradroaldoferreira.modelo.MaoUsada;
 import br.edu.utfpradroaldoferreira.modelo.Pessoa;
 import br.edu.utfpradroaldoferreira.persistencia.PessoasDatabase;
 import br.edu.utfpradroaldoferreira.utils.UtilsAlert;
+import br.edu.utfpradroaldoferreira.utils.UtilsLocalDate;
 
 public class PessoaActivity extends AppCompatActivity {
     public static final String KEY_ID = "ID";
@@ -36,7 +41,7 @@ public class PessoaActivity extends AppCompatActivity {
     public static final int MODO_NOVO = 0;
     public static final int MODO_EDITAR = 1;
 
-    private EditText editTextNome, editTextMedia;
+    private EditText editTextNome, editTextMedia, editTextDataNascimento;
     private CheckBox checkBoxBolsista;
     private RadioGroup radioGroupMaoUsada;
     //precisa mapear os radio buttons
@@ -51,15 +56,18 @@ public class PessoaActivity extends AppCompatActivity {
     private boolean sugerirTipo = false;
     private int ultimoTipo = 0;
 
+    private LocalDate dataNascimento;
+    private int anosParaTras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pessoa);
 
         //setTitle(getString(R.string.cadastro_de_pessoas));
-
         editTextNome = findViewById(R.id.editTextNome);
         editTextMedia = findViewById(R.id.editTextMedia);
+        editTextDataNascimento = findViewById(R.id.editTextDataNascimento);
         checkBoxBolsista = findViewById(R.id.checkBoxBolsista);
         radioGroupMaoUsada = findViewById(R.id.radioGroupMaoUsada);
         spinnerTipo = findViewById(R.id.spinnerTipo);
@@ -68,8 +76,22 @@ public class PessoaActivity extends AppCompatActivity {
         radioButtonAmbas = findViewById(R.id.radioButtonAmbas);
         radioButtonEsquerda = findViewById(R.id.radioButtonEsquerda);
 
+
+        editTextDataNascimento.setFocusable(false);
+        editTextDataNascimento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarDatePickerDialog();
+            }
+        });
+
         //inicializa ao abrir a activity
         lerPreferencias();
+
+        anosParaTras = getResources().getInteger(R.integer.anos_para_tras);
+
+        dataNascimento = LocalDate.now().minusYears(anosParaTras);
+
 
         Intent intentAbertura = getIntent();
         Bundle bundle = intentAbertura.getExtras();
@@ -95,6 +117,17 @@ public class PessoaActivity extends AppCompatActivity {
 
                 editTextNome.setText(pessoaOriginal.getNome());
                 editTextMedia.setText(String.valueOf(pessoaOriginal.getMedia()));
+
+                dataNascimento = pessoaOriginal.getDataNascimento();
+
+                if (pessoaOriginal.getDataNascimento() == null) {
+                    dataNascimento = pessoaOriginal.getDataNascimento();
+                }
+
+
+                editTextDataNascimento.setText(UtilsLocalDate.formatLocalDateToString(dataNascimento));
+
+
                 checkBoxBolsista.setChecked(pessoaOriginal.isBolsista());
                 spinnerTipo.setSelection(pessoaOriginal.getTipo());
 
@@ -115,10 +148,42 @@ public class PessoaActivity extends AppCompatActivity {
         }
     }
 
+    private void mostrarDatePickerDialog() {
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                //date time picker começa a contar o mês em zero
+                dataNascimento = LocalDate.of(year, month + 1, dayOfMonth);
+
+                editTextDataNascimento.setText(UtilsLocalDate.formatLocalDateToString(dataNascimento));
+            }
+        };
+
+
+        if (dataNascimento == null) {//se não hover data cadastrada
+            dataNascimento = LocalDate.now().minusYears(anosParaTras);
+        }
+
+        DatePickerDialog picker = new DatePickerDialog(this,
+                R.style.SpinnerDatePickerDialogTheme,
+                listener,
+                dataNascimento.getYear(),
+                dataNascimento.getMonthValue() - 1,
+                dataNascimento.getDayOfMonth());
+
+        long dataMaximaMillis = UtilsLocalDate.toMilissegundos(LocalDate.now());
+
+        picker.getDatePicker().setMaxDate(dataMaximaMillis);
+        picker.show();
+    }
+
     public void limparCampos() {
 
         final String nome = editTextNome.getText().toString();
         final String media = editTextMedia.getText().toString();
+
+        final LocalDate dataNascimentoAnterior = dataNascimento;
+
         final boolean bolsista = checkBoxBolsista.isChecked();
         final int radioButtonId = radioGroupMaoUsada.getCheckedRadioButtonId();
         final int tipo = spinnerTipo.getSelectedItemPosition();
@@ -128,6 +193,11 @@ public class PessoaActivity extends AppCompatActivity {
 
         editTextNome.setText(null);
         editTextMedia.setText(null);
+
+        editTextDataNascimento.setText(null);
+        dataNascimento = LocalDate.now().minusYears(anosParaTras);
+
+
         checkBoxBolsista.setChecked(false);
         radioGroupMaoUsada.clearCheck();
         spinnerTipo.setSelection(0);
@@ -145,6 +215,10 @@ public class PessoaActivity extends AppCompatActivity {
 
                 editTextNome.setText(nome);
                 editTextMedia.setText(media);
+
+                dataNascimento = dataNascimentoAnterior;
+                editTextDataNascimento.setText(UtilsLocalDate.formatLocalDateToString(dataNascimento));
+
                 checkBoxBolsista.setChecked(bolsista);
 
                 if (radioButtonId == R.id.radioButtonDireita) {
@@ -212,6 +286,20 @@ public class PessoaActivity extends AppCompatActivity {
             return;
         }
 
+        String dataNascimentoString = editTextDataNascimento.getText().toString();
+
+        if (dataNascimentoString == null || dataNascimentoString.trim().isEmpty()) {
+            UtilsAlert.mostrarAviso(this, R.string.faltou_entrar_com_data_nascimento);
+            return;
+        }
+
+        int idade = UtilsLocalDate.diferencaEmAnosParaHoje(dataNascimento);
+
+        if (idade < 0 || idade > 65) {
+            UtilsAlert.mostrarAviso(this, R.string.idade_invalida);
+            return;
+        }
+
         int radioButtonId = radioGroupMaoUsada.getCheckedRadioButtonId();
 
         MaoUsada maoUsada;
@@ -237,7 +325,7 @@ public class PessoaActivity extends AppCompatActivity {
 
         boolean bolsista = checkBoxBolsista.isChecked();
 
-        Pessoa pessoa = new Pessoa(nome, media, bolsista, tipo, maoUsada);
+        Pessoa pessoa = new Pessoa(nome, media, bolsista, tipo, maoUsada, dataNascimento);
 
         if (pessoa.equals(pessoaOriginal)) {
             //valores iguais aos anteriores, não precisa salvar nada
